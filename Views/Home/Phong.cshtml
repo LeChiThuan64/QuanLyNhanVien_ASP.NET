@@ -1,0 +1,38 @@
+﻿@model IEnumerable<YourProjectNamespace.Models.PhongViewModel>
+
+@{
+    ViewData["Title"] = "Danh Sách Phòng";
+}
+
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a href="/Home/Index" class="btn btn-secondary">Trang Chủ</a>
+            <button class="btn btn-primary ml-2">Lưu</button>
+                         <button class="btn btn-success ml-2">+</button>
+        </div>
+        <input type="text" class="form-control" placeholder="Tìm kiếm phòng ..." style="width: 200px;">
+    </div>
+
+    <!-- Bảng hiển thị -->
+    <table class="table table-bordered text-center">
+        <thead class="thead-dark">
+            <tr>
+                <th>Tên Phòng</th>
+                <th>Mô Tả</th>
+                <th>Số Lượng Người</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var phong in Model)
+            {
+                    <tr>
+                        <td>@phong.TenPhong</td>
+                        <td>@phong.MoTa</td>
+                        <td>@phong.SoLuongNguoi</td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>
