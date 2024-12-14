@@ -23,6 +23,76 @@ namespace PhongUserManagement.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public IActionResult ThemUser()
+        {
+            // Truyền danh sách phòng vào ViewBag để hiển thị trong dropdown
+            ViewBag.Phongs = _context.Phongs
+                .Select(p => new { PhongId = p.PhongId, TenPhong = p.TenPhong })
+                .ToList();
+
+            return View();
+        }
+
+
+        [HttpGet]
+		public IActionResult XoaPhong(int id)
+		{
+			// Tìm phòng cần xóa trong database
+			var phong = _context.Phongs.FirstOrDefault(p => p.PhongId == id);
+
+			if (phong != null)
+			{
+				// Xóa phòng
+				_context.Phongs.Remove(phong);
+				_context.SaveChanges();
+
+				// Chuyển hướng lại trang danh sách phòng
+				return RedirectToAction("Phong");
+			}
+
+			// Nếu phòng không tồn tại, chuyển hướng lại danh sách
+			return RedirectToAction("Phong");
+		}
+
+		[HttpPost]
+        [HttpPost]
+        public IActionResult ThemPhong(string TenPhong, string MoTa, int? SoLuongNguoi)
+        {
+            if (string.IsNullOrEmpty(TenPhong))
+            {
+                ModelState.AddModelError("TenPhong", "Tên phòng không được để trống.");
+                return View();
+            }
+
+            if (string.IsNullOrEmpty(MoTa))
+            {
+                ModelState.AddModelError("MoTa", "Mô tả không được để trống.");
+                return View();
+            }
+
+            // Tạo đối tượng Phong mới
+            var phongMoi = new Phong
+            {
+                TenPhong = TenPhong,
+                MoTa = MoTa,
+                SoLuongNguoi = SoLuongNguoi
+            };
+
+            // Lưu vào database
+            _context.Phongs.Add(phongMoi);
+            _context.SaveChanges();
+
+            return RedirectToAction("Phong");
+        }
+
+
+
+        public IActionResult ThemPhong()
+        {
+            return View();
+        }
+
         public IActionResult ExportToPdf()
         {
             // Lấy dữ liệu từ database
@@ -91,18 +161,28 @@ namespace PhongUserManagement.Controllers
 
         public IActionResult Phong()
         {
-            // Lấy danh sách phòng và số lượng người trong từng phòng
             var danhSachPhong = _context.Phongs
                 .Select(p => new PhongViewModel
                 {
-                    TenPhong = p.TenPhong,
-                    MoTa = p.MoTa,
-                    SoLuongNguoi = _context.Users.Count(u => u.PhongId == p.PhongId)
+                    PhongId = p.PhongId,
+                    TenPhong = p.TenPhong ?? "Tên phòng chưa được đặt", // Kiểm tra NULL
+                    MoTa = string.IsNullOrEmpty(p.MoTa) ? "Không có mô tả" : p.MoTa, // Kiểm tra NULL hoặc chuỗi rỗng
+                    SoLuongNguoi = _context.Users.Count(u => u.PhongId == p.PhongId),
+                    DanhSachNhanVien = _context.Users
+                        .Where(u => u.PhongId == p.PhongId)
+                        .Select(u => new UserViewModel
+                        {
+                            HoVaTen = string.IsNullOrEmpty(u.FullName) ? "Chưa có tên" : u.FullName, // Kiểm tra NULL
+                            Email = u.Email ?? "Không có email" // Kiểm tra NULL
+                        })
+                        .ToList()
                 })
                 .ToList();
 
-            return View(danhSachPhong); // Truyền danh sách ViewModel sang view
+            return View(danhSachPhong);
         }
+
+
 
 
 

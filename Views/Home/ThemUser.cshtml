@@ -1,0 +1,65 @@
+﻿@model YourProjectNamespace.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Thêm User";
+}
+
+<div class="container mt-4">
+    <!-- Tiêu đề -->
+    <h2 class="text-center mb-4">Thêm User Mới</h2>
+
+    <!-- Form thêm User -->
+    <form method="post" asp-action="ThemUser">
+        <div class="form-group">
+            <label for="Username">Tên Đăng Nhập</label>
+            <input type="text" class="form-control" id="Username" name="Username" placeholder="Nhập tên đăng nhập..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="Password">Mật Khẩu</label>
+            <input type="password" class="form-control" id="Password" name="Password" placeholder="Nhập mật khẩu..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" placeholder="Nhập email..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="FullName">Họ và Tên</label>
+            <input type="text" class="form-control" id="FullName" name="FullName" placeholder="Nhập họ và tên..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="DateOfBirth">Ngày Sinh</label>
+            <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth">
+        </div>
+
+        <div class="form-group">
+            <label for="PhongId">Phòng</label>
+            <select class="form-control" id="PhongId" name="PhongId">
+                <option value="">Chọn phòng...</option>
+                @if (ViewBag.Phongs != null)
+                {
+                    foreach (var phong in ViewBag.Phongs)
+                    {
+                                <option value="@phong.PhongId">@phong.TenPhong</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="Role">Vai Trò</label>
+            <select class="form-control" id="Role" name="Role">
+                <option value="1">User</option>
+                <option value="0">Admin</option>
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a href="/Home/NhanVien" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,34 @@
+﻿@model YourProjectNamespace.Models.PhongViewModel
+
+@{
+    ViewData["Title"] = "Thêm Phòng";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Thêm Phòng Mới</h2>
+
+    <form method="post" asp-action="ThemPhong">
+        <div class="form-group">
+            <label for="TenPhong">Tên Phòng</label>
+            <input type="text" class="form-control" id="TenPhong" name="TenPhong" placeholder="Nhập tên phòng..." required>
+            <!-- Hiển thị lỗi cho Tên Phòng -->
+            <span asp-validation-for="TenPhong" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="MoTa">Mô Tả</label>
+            <textarea class="form-control" id="MoTa" name="MoTa" rows="3" placeholder="Nhập mô tả..." required></textarea>
+            <!-- Hiển thị lỗi cho Mô Tả -->
+            <span asp-validation-for="MoTa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="SoLuongNguoi">Số Lượng Người</label>
+            <input type="number" class="form-control" id="SoLuongNguoi" name="SoLuongNguoi" placeholder="Nhập số lượng người...">
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a href="/Home/Phong" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+</div>
+
