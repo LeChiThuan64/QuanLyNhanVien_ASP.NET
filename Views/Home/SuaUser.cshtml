@@ -1,0 +1,82 @@
+﻿@model YourProjectNamespace.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Sửa Thông Tin User";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Sửa Thông Tin User</h2>
+
+    <form method="post" asp-action="SuaUser">
+        <!-- Username không thể chỉnh sửa -->
+        <div class="form-group">
+            <label for="Username">Tên Đăng Nhập</label>
+            <input type="text" class="form-control" id="Username" name="Username" value="@Model.Username" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="FullName">Họ và Tên</label>
+            <input type="text" class="form-control" id="FullName" name="FullName" value="@Model.FullName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="Password">Mật Khẩu</label>
+            <input type="password" class="form-control" id="Password" name="Password" placeholder="Để trống nếu không muốn thay đổi">
+        </div>
+
+        <div class="form-group">
+            <label for="DateOfBirth">Ngày Sinh</label>
+            <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" value="@Model.DateOfBirth?.ToString("yyyy-MM-dd")">
+        </div>
+
+        <div class="form-group">
+    <label for="PhongId">Phòng</label>
+    <select class="form-control" id="PhongId" name="PhongId">
+        <option value="">Chọn phòng...</option>
+                @if (ViewBag.Phongs != null)
+                {
+                    foreach (var phong in ViewBag.Phongs)
+                    {
+                        <option value="@phong.PhongId" 
+                                selected="@(Model?.PhongId == phong.PhongId ? "selected" : "")">
+                            @phong.TenPhong
+                        </option>
+                    }
+                }
+    </select>
+</div>
+
+
+        <div class="form-group">
+    <label for="Role">Vai Trò</label>
+    <select class="form-control" id="Role" name="Role">
+        <option value="0" selected="@(Model?.Role == 0 ? "selected" : "")">Admin</option>
+        <option value="1" selected="@(Model?.Role == 1 ? "selected" : "")">User</option>
+    </select>
+</div>
+
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+            <a href="/Home/NhanVien" class="btn btn-secondary">Hủy</a>
+        </div>
+    </form>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                        <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+   @*  để hiển thị lỗi *@
+
+</div>

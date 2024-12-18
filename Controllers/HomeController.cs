@@ -65,6 +65,64 @@ namespace PhongUserManagement.Controllers
             ViewBag.ErrorMessage = "Tên đăng nhập hoặc mật khẩu không đúng!";
             return View();
         }
+
+
+        [HttpPost]
+        public IActionResult SuaUser(UserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Username == model.Username);
+                if (user != null)
+                {
+                    user.FullName = model.FullName;
+                    user.Email = model.Email;
+                    user.DateOfBirth = model.DateOfBirth;
+                    user.PhongId = model.PhongId;
+                    user.Role = model.Role;
+
+                    // Chỉ cập nhật mật khẩu nếu người dùng nhập mới
+                    if (!string.IsNullOrEmpty(model.Password))
+                    {
+                        user.PasswordHash = model.Password;
+                    }
+
+                    _context.SaveChanges();
+                    return RedirectToAction("NhanVien");
+                }
+            }
+
+            // Truyền danh sách phòng để load lại dropdown
+            ViewBag.Phongs = _context.Phongs.ToList();
+            return View(model);
+        }
+
+
+
+        [HttpGet]
+        public IActionResult SuaUser(string username)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+
+            if (user == null)
+                return NotFound();
+
+            var model = new UserViewModel
+            {
+                Username = user.Username,
+                FullName = user.FullName,
+                Email = user.Email,
+                DateOfBirth = user.DateOfBirth,
+                PhongId = user.PhongId,
+                Role = user.Role
+            };
+
+            ViewBag.Phongs = _context.Phongs.ToList(); // Lấy danh sách phòng
+            return View(model);
+        }
+
+
+
         [HttpGet]
         public IActionResult SuaPhong(int id)
         {
@@ -139,6 +197,25 @@ namespace PhongUserManagement.Controllers
 
             ViewBag.Phongs = _context.Phongs.ToList();
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult XoaUser(string username)
+        {
+            // Tìm nhân viên theo username
+            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+
+            if (user == null)
+            {
+                // Nếu không tìm thấy, trả về NotFound
+                return NotFound("Người dùng không tồn tại.");
+            }
+
+            // Xóa nhân viên
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+
+            // Chuyển hướng lại trang danh sách nhân viên
+            return RedirectToAction("NhanVien");
         }
 
 
