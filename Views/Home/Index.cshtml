@@ -6,16 +6,20 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <button class="btn btn-secondary">Trang Chủ</button>
+  
         <input type="text" class="form-control" placeholder="Tìm kiếm ..." style="width: 200px;">
     </div>
 
     <!-- Phần thông tin -->
+           
     <div class="row mb-4">
         <div class="col-md-6">
             <h4>Phòng đang có: @ViewData["SoLuongPhong"]</h4>
             <a href="/Home/Phong" class="btn btn-outline-primary">Xem danh sách Phòng</a>
         </div>
+
         <div class="col-md-6 text-right">
+             <a href="/Home/DangXuat" class="btn btn-danger ml-2">Đăng Xuất</a>
             <h4>Tổng Nhân Viên: @ViewData["TongNhanVien"]</h4>
             <a href="/Home/NhanVien" class="btn btn-outline-success">Xem danh sách Nhân Viên</a>
         </div>

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhongUserManagement")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ca1385a1cee28c0914891ec8e5537cdf4c2a388")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e437a6c5fbb4fa389171389bd2afb62e148200a6")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhongUserManagement")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhongUserManagement")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

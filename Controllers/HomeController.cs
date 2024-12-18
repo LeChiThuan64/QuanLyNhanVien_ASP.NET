@@ -32,12 +32,81 @@ namespace PhongUserManagement.Controllers
 
 
 
-
-
         [HttpGet]
         public IActionResult DangNhap()
         {
             return View();
+        }
+        public IActionResult DangXuat()
+        {
+            // Xóa session hoặc cookie đăng nhập (nếu dùng)
+            HttpContext.Session.Clear(); // Nếu dùng session
+            Response.Cookies.Delete("UserSession"); // Nếu dùng cookie
+
+            // Chuyển hướng về trang Đăng Nhập
+            return RedirectToAction("DangNhap");
+        }
+
+
+        [HttpPost]
+        public IActionResult DangNhap(string username, string password)
+        {
+            // Kiểm tra tên đăng nhập và mật khẩu từ database
+            var user = _context.Users
+                        .FirstOrDefault(u => u.Username == username && u.PasswordHash == password);
+
+            if (user != null)
+            {
+                // Đăng nhập thành công, chuyển hướng đến trang Index
+                return RedirectToAction("Index");
+            }
+
+            // Thông báo lỗi nếu đăng nhập thất bại
+            ViewBag.ErrorMessage = "Tên đăng nhập hoặc mật khẩu không đúng!";
+            return View();
+        }
+        [HttpGet]
+        public IActionResult SuaPhong(int id)
+        {
+            // Tìm phòng cần sửa theo ID
+            var phong = _context.Phongs.FirstOrDefault(p => p.PhongId == id);
+            if (phong == null)
+            {
+                return NotFound();
+            }
+
+            // Tạo ViewModel để truyền dữ liệu sang View
+            var phongViewModel = new PhongViewModel
+            {
+                PhongId = phong.PhongId,
+                TenPhong = phong.TenPhong,
+                MoTa = phong.MoTa,
+                SoLuongNguoi = _context.Users.Count(u => u.PhongId == phong.PhongId)
+            };
+
+            return View(phongViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult SuaPhong(PhongViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Tìm phòng trong database
+                var phong = _context.Phongs.FirstOrDefault(p => p.PhongId == model.PhongId);
+                if (phong != null)
+                {
+                    // Cập nhật dữ liệu phòng
+                    phong.TenPhong = model.TenPhong;
+                    phong.MoTa = model.MoTa;
+
+                    _context.SaveChanges();
+                    return RedirectToAction("Phong"); // Chuyển về danh sách phòng
+                }
+            }
+
+            // Nếu có lỗi, quay lại View và hiển thị thông tin
+            return View(model);
         }
 
 
