@@ -184,3 +184,6 @@ C:\Users\lhqua\Downloads\QuanLyNhanVien_ASP.NET\obj\Debug\net6.0\refint\PhongUse
 C:\Users\lhqua\Downloads\QuanLyNhanVien_ASP.NET\obj\Debug\net6.0\PhongUserManagement.pdb
 C:\Users\lhqua\Downloads\QuanLyNhanVien_ASP.NET\obj\Debug\net6.0\PhongUserManagement.genruntimeconfig.cache
 C:\Users\lhqua\Downloads\QuanLyNhanVien_ASP.NET\obj\Debug\net6.0\ref\PhongUserManagement.dll
+C:\Users\lhqua\Downloads\QuanLyNhanVien_ASP.NET\obj\Debug\net6.0\PhongUserManagement.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\lhqua\Downloads\QuanLyNhanVien_ASP.NET\bin\Debug\net6.0\X.PagedList.dll
+C:\Users\lhqua\Downloads\QuanLyNhanVien_ASP.NET\bin\Debug\net6.0\X.PagedList.Mvc.Core.dll

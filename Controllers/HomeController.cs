@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PhongUserManagement.Models;
 using System.Diagnostics;
 using YourProjectNamespace.Models;
 using System.Linq;
@@ -8,6 +7,12 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using System.IO;
+using PhongUserManagement.Models; // Thay thế bằng namespace của DbContext trong dự án của bạn
+using Microsoft.EntityFrameworkCore; // Import thêm thư viện này để sử dụng EF Core
+using X.PagedList;
+
+
+
 
 
 namespace PhongUserManagement.Controllers
@@ -22,6 +27,51 @@ namespace PhongUserManagement.Controllers
             _logger = logger;
             _context = context;
         }
+
+
+
+
+
+
+
+        [HttpGet]
+        public IActionResult DangNhap()
+        {
+            return View();
+        }
+
+
+        public IActionResult ThemUser(UserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new User
+                {
+                    Username = model.Username,
+                    PasswordHash = model.Password, // Gán trực tiếp mật khẩu thô (không an toàn)
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    DateOfBirth = model.DateOfBirth,
+                    PhongId = model.PhongId,
+                    Role = model.Role
+                };
+
+                try
+                {
+                    _context.Users.Add(user);
+                    _context.SaveChanges();
+                    return RedirectToAction("NhanVien");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Có lỗi xảy ra khi thêm người dùng: " + ex.Message);
+                }
+            }
+
+            ViewBag.Phongs = _context.Phongs.ToList();
+            return View(model);
+        }
+
 
         [HttpGet]
         public IActionResult ThemUser()
@@ -185,24 +235,51 @@ namespace PhongUserManagement.Controllers
 
 
 
-
-
-        public IActionResult NhanVien()
+        public IActionResult NhanVien(int? page)
         {
-            // Lấy danh sách nhân viên và chuyển sang dạng AsEnumerable() để xử lý phía client
-            var danhSachNhanVien = _context.Users
-                .AsEnumerable() // Thực hiện truy vấn trước khi xử lý trên client
-                .Select((u, index) => new
+            int pageSize = 10; // Số lượng mục trên mỗi trang
+            int pageNumber = page ?? 1; // Trang mặc định là 1 nếu không được truyền
+
+            // Lấy dữ liệu nhân viên từ database
+            var nhanViens = _context.Users
+                .Select(u => new UserViewModel
                 {
-                    STT = index + 1,
-                    HoVaTen = u.FullName,
-                    Email = u.Email,
-                    TinhTrang = u.Role == 0 ? "Admin" : "User"
+                    Username = u.Username,
+                    FullName = u.FullName ?? "Chưa có tên",
+                    Email = u.Email ?? "Không có email",
+                    Role = u.Role,
+                    HoVaTen = u.FullName ?? "Chưa có tên",
                 })
+                .OrderBy(u => u.FullName) // Sắp xếp theo tên
+                .Skip((pageNumber - 1) * pageSize) // Bỏ qua các mục ở trang trước
+                .Take(pageSize) // Lấy đúng số lượng mục trên trang
                 .ToList();
 
-            return View(danhSachNhanVien);
+            // Tính toán thông tin phân trang
+            int totalRecords = _context.Users.Count(); // Tổng số bản ghi
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+            ViewBag.CurrentPage = pageNumber;
+
+            return View(nhanViens);
         }
+
+
+        //public IActionResult NhanVien()
+        //{
+        //    // Lấy danh sách nhân viên và chuyển sang dạng AsEnumerable() để xử lý phía client
+        //    var danhSachNhanVien = _context.Users
+        //        .AsEnumerable() // Thực hiện truy vấn trước khi xử lý trên client
+        //        .Select((u, index) => new
+        //        {
+        //            STT = index + 1,
+        //            HoVaTen = u.FullName,
+        //            Email = u.Email,
+        //            TinhTrang = u.Role == 0 ? "Admin" : "User"
+        //        })
+        //        .ToList();
+
+        //    return View(danhSachNhanVien);
+        //}
 
 
         public IActionResult Privacy()

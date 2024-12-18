@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "I7733MDmdfufTaMq/2h8M3FXXIDIS6A7MFoMwpngjRs2haw8/99+7v1DxvQvUQh0ehqAhmVJKbB9Iedox2c6+Q==",
+  "dgSpecHash": "iT7evZKcy1LGl2tCSOn/Poxy747xcPvSUi2qWa0nldCawB4r9qlha1m5y7gdMb/8t5W2pQsPOeNsi/gl1CyBRQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\lhqua\\Downloads\\QuanLyNhanVien_ASP.NET\\PhongUserManagement.csproj",
   "expectedPackageFiles": [
@@ -123,7 +123,9 @@
     "C:\\Users\\lhqua\\.nuget\\packages\\system.threading.threadpool\\4.3.0\\system.threading.threadpool.4.3.0.nupkg.sha512",
     "C:\\Users\\lhqua\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
     "C:\\Users\\lhqua\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
-    "C:\\Users\\lhqua\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
+    "C:\\Users\\lhqua\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\lhqua\\.nuget\\packages\\x.pagedlist\\10.5.7\\x.pagedlist.10.5.7.nupkg.sha512",
+    "C:\\Users\\lhqua\\.nuget\\packages\\x.pagedlist.mvc.core\\10.5.7\\x.pagedlist.mvc.core.10.5.7.nupkg.sha512"
   ],
   "logs": []
 }

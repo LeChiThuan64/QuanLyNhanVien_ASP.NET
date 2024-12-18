@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[7.0.12, )"
             },
+            "X.PagedList.Mvc.Core": {
+              "target": "Package",
+              "version": "[10.5.7, )"
+            },
             "itext7": {
               "target": "Package",
               "version": "[7.2.5, )"
